@@ -1,32 +1,19 @@
 #include <iostream>
 
-class baseblock
+class BaseBlock
 {
 protected:
     bool m_base[3][3];
 
 public:
-    baseblock() : m_base{ }
+    BaseBlock() : m_base{ }
     {
     }
-    int getinfo(int i, int j)
+    int getInfo(int i, int j)
     {
         return m_base[i][j];
     }
-    void showblock()
-    {
-        for (int i = 0; i < 3; ++i)
-        {
-            for (int j = 0; j < 3; ++j)
-            {
-                if (1 == m_base[i][j])
-                    std::cout << "■";
-                else
-                    std::cout << "□";
-            }
-            std::cout << std::endl;
-        }
-    }
+
     void rotate()
     {
         //모서리
@@ -42,54 +29,53 @@ public:
         m_base[2][1] = m_base[1][2];
         m_base[1][2] = temp;
     }
-    void setblock()
-    {
-
-    }
 };
 
-class stick : public baseblock
+//일자모양 블록
+class A : public BaseBlock
 {
 public:
-    stick()
+    A()
     {
-        baseblock();
+        BaseBlock();
         m_base[0][1] = 1;
         m_base[1][1] = 1;
         m_base[2][1] = 1;
     }
 };
-class nieun : public baseblock
+//ㄴ모양 블록
+class B : public BaseBlock
 {
 public:
-    nieun()
+    B()
     {
-        baseblock();
+        BaseBlock();
         m_base[1][0] = 1;
         m_base[2][0] = 1;
         m_base[2][1] = 1;
         m_base[2][2] = 1;
     }
 };
-class re_nieun : public baseblock
+//ㄱ모양 블록
+class C : public BaseBlock
 {
 public:
-    re_nieun()
+    C()
     {
-        baseblock();
+        BaseBlock();
         m_base[1][2] = 1;
         m_base[2][0] = 1;
         m_base[2][1] = 1;
         m_base[2][2] = 1;
     }
 };
-
-class nemo : public baseblock
+//ㅁ모양 블록
+class D : public BaseBlock
 {
 public:
-    nemo()
+    D()
     {
-        baseblock();
+        BaseBlock();
         m_base[1][0] = 1;
         m_base[2][0] = 1;
         m_base[1][1] = 1;
@@ -99,36 +85,39 @@ public:
     {
     }
 };
-class oh : public baseblock
+//ㅓ모양 블록
+class E : public BaseBlock
 {
 public:
-    oh()
+    E()
     {
-        baseblock();
+        BaseBlock();
         m_base[1][1] = 1;
         m_base[2][0] = 1;
         m_base[2][1] = 1;
         m_base[2][2] = 1;
     }
 };
-class sshape : public baseblock
+//s모양 블록
+class F : public BaseBlock
 {
 public:
-    sshape()
+    F()
     {
-        baseblock();
+        BaseBlock();
         m_base[0][1] = 1;
         m_base[1][1] = 1;
         m_base[1][2] = 1;
         m_base[2][2] = 1;
     }
 };
-class zshape : public baseblock
+//z모양 블록
+class G : public BaseBlock
 {
 public:
-    zshape()
+    G()
     {
-        baseblock();
+        BaseBlock();
         m_base[0][1] = 1;
         m_base[1][1] = 1;
         m_base[1][0] = 1;
