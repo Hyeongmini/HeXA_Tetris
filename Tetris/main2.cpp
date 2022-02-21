@@ -23,9 +23,8 @@ public:
 
     ~map()
     {
-
     }
-    
+
     void posInit()
     {
         x_pos = 0;
@@ -40,8 +39,8 @@ public:
         {
             for (int j = 0; j < 3; ++j)
             {
-                
-                if (1 == pMap[y_pos + i][x_pos + j] && 0 == s.getInfo(i, j));
+
+                if (pMap[y_pos + i][x_pos + j] == 1 && s.getInfo(i, j) == 0);
                 else
                     pMap[y_pos + i][x_pos + j] = s.getInfo(i, j);
             }
@@ -55,7 +54,7 @@ public:
         {
             for (int j = 0; j < 3; ++j)
             {
-                if (1 == pMap[y_pos + i][x_pos + j] && 0 == s.getInfo(i, j));
+                if (pMap[y_pos + i][x_pos + j] == 1 && s.getInfo(i, j) == 0);
                 else
                     pMap[y_pos + i][x_pos + j] = 0;
             }
@@ -63,7 +62,7 @@ public:
     }
     //콘솔창 초기화
     void mapInit()
-    { 
+    {
         system("cls");
     }
     //블록 한칸 내리기
@@ -78,7 +77,7 @@ public:
     template<class T>
     void left(T s)
     {
-   
+
         unBlock<T>(s);
         --x_pos;
         setBlock<T>(s);
@@ -104,7 +103,7 @@ public:
         {
             for (int j = 0; j < size; ++j)
             {
-                if (1 == pMap[i][j])
+                if (pMap[i][j] == 1)
                     std::cout << "■";
                 else
                     std::cout << "□";
@@ -130,90 +129,87 @@ public:
                 pMap[i][j] = stack[i][j];
             }
         }
-        while (true)
-        {   
+        int crash = 1;
+        while (crash)
+        {
+            int key = _getch();
+            key = _getch();
 
-            if (size - 3 == y_pos && 1 == s.getInfo(2, 0)) break;
-            else if (size - 3 == y_pos && 1 == s.getInfo(2, 1)) break;
-            else if (size - 3 == y_pos && 1 == s.getInfo(2, 2)) break;
-            else if (size - 2 == y_pos && 1 == s.getInfo(1, 0)) break;
-            else if (size - 2 == y_pos && 1 == s.getInfo(1, 1)) break;
-            else if (size - 2 == y_pos && 1 == s.getInfo(1, 2)) break;
-            else if (1 == pMap[y_pos + 3][x_pos] && 1 == s.getInfo(2, 0)) break;
-            else if (1 == pMap[y_pos + 3][x_pos + 1] && 1 == s.getInfo(2, 1)) break;
-            else if (1 == pMap[y_pos + 3][x_pos + 2] && 1 == s.getInfo(2, 2)) break;
-            else if (1 == pMap[y_pos + 2][x_pos] && 1 == s.getInfo(1, 0) && 0 == s.getInfo(2, 0)) break;
-            else if (1 == pMap[y_pos + 2][x_pos + 1] && 1 == s.getInfo(1, 1) && 0 == s.getInfo(2, 1)) break;
-            else if (1 == pMap[y_pos + 2][x_pos + 2] && 1 == s.getInfo(1, 2) && 0 == s.getInfo(2, 2)) break;
-
-            int i = _getch();
-            i = _getch();
-            switch (i)
+            for (int i = 0; i < 3; ++i)
             {
-            case UP:
-                if (size - 2 == x_pos && 1 == s.getInfo(0, 1)) left<T>(s);
-                else if (size - 2 == x_pos && 1 == s.getInfo(1, 1)) left<T>(s);
-                else if (size - 2 == x_pos && 1 == s.getInfo(2, 1)) left<T>(s);
-                else if (-1 == x_pos && 1 == s.getInfo(0, 1)) right<T>(s);
-                else if (-1 == x_pos && 1 == s.getInfo(1, 1)) right<T>(s);
-                else if (-1 == x_pos && 1 == s.getInfo(2, 1)) right<T>(s);
-                mapInit();
-                unBlock<T>(s);
-                s.rotate();
+                if ((y_pos == size - 3 && s.getInfo(2, i) == 1) || (y_pos == size - 2 && s.getInfo(1, i) == 1))
+                {
+                    crash = 0;
+                    break;
+                }
+                else if ((pMap[y_pos + 3][x_pos + i] == 1 && s.getInfo(2, i) == 1) || (pMap[y_pos + 2][x_pos + i] == 1 && s.getInfo(1, i) == 1 && s.getInfo(2, i) == 0) || (pMap[y_pos + 1][x_pos + i] == 1 && s.getInfo(0, i) == 1 && s.getInfo(1, i) == 0 && s.getInfo(2, i) == 0))
+                {
+                    crash = 0;
+                    break;
+                }
 
-                setBlock<T>(s);
-                showMap();
-                break;
-            case DOWN:
-                
-                if (size - 3 == y_pos && 1 == s.getInfo(2, 0)) break;
-                else if (size - 3 == y_pos && 1 == s.getInfo(2, 1)) break;
-                else if (size - 3 == y_pos && 1 == s.getInfo(2, 2)) break;           
-                else if (size - 2 == y_pos && 1 == s.getInfo(1, 0)) break;
-                else if (size - 2 == y_pos && 1 == s.getInfo(1, 1)) break;
-                else if (size - 2 == y_pos && 1 == s.getInfo(1, 2)) break;
-               
-
-                mapInit();
-                down<T>(s);
-                showMap();
-                break;
-            case LEFT:
-                if (0 == x_pos && 1 == s.getInfo(0, 0)) break;
-                else if (0 == x_pos && 1 == s.getInfo(1, 0)) break;
-                else if (0 == x_pos && 1 == s.getInfo(2, 0)) break;
-                else if (-1 == x_pos && 1 == s.getInfo(0, 1)) break;
-                else if (-1 == x_pos && 1 == s.getInfo(1, 1)) break;
-                else if (-1 == x_pos && 1 == s.getInfo(2, 1)) break;
-                else if (1 == pMap[y_pos][x_pos - 1] && 1 == s.getInfo(0, 0)) break;
-                else if (1 == pMap[y_pos + 1][x_pos - 1] && 1 == s.getInfo(1, 0)) break;
-                else if (1 == pMap[y_pos + 2][x_pos - 1] && 1 == s.getInfo(2, 0)) break;
-                else if (1 == pMap[y_pos][x_pos] && 1 == s.getInfo(0, 1) && 0 == s.getInfo(0, 0)) break;
-                else if (1 == pMap[y_pos + 1][x_pos] && 1 == s.getInfo(1, 1) && 0 == s.getInfo(1, 0)) break;
-                else if (1 == pMap[y_pos + 2][x_pos] && 1 == s.getInfo(2, 1) && 0 == s.getInfo(2, 0)) break;
-                mapInit();
-                left<T>(s);
-                showMap();
-                break;
-            case RIGHT:
-                if (size - 3 == x_pos && 1 == s.getInfo(0, 2)) break;
-                else if (size - 3 == x_pos && 1 == s.getInfo(1, 2)) break;
-                else if (size - 3 == x_pos && 1 == s.getInfo(2, 2)) break;
-                else if (size - 2 == x_pos && 1 == s.getInfo(0, 1)) break;
-                else if (size - 2 == x_pos && 1 == s.getInfo(1, 1)) break;
-                else if (size - 2 == x_pos && 1 == s.getInfo(2, 1)) break;
-                else if (1 == pMap[y_pos][x_pos + 3] && 1 == s.getInfo(0, 2)) break;
-                else if (1 == pMap[y_pos + 1][x_pos + 3] && 1 == s.getInfo(1, 2)) break;
-                else if (1 == pMap[y_pos + 2][x_pos + 3] && 1 == s.getInfo(2, 2)) break;
-                else if (1 == pMap[y_pos][x_pos + 2] && 1 == s.getInfo(0, 1) && 0 == s.getInfo(0, 2)) break;
-                else if (1 == pMap[y_pos + 1][x_pos + 2] && 1 == s.getInfo(1, 1) && 0 == s.getInfo(1, 2)) break;
-                else if (1 == pMap[y_pos + 2][x_pos + 2] && 1 == s.getInfo(2, 1) && 0 == s.getInfo(2, 2)) break;
-                mapInit();
-                right<T>(s);
-                showMap();
-                break;
+                else if (i == 2)
+                {
+                    switch (key)
+                    {
+                    case UP:
+                        for (int i = 0; i < 3; ++i)
+                        {
+                            if (x_pos == size - 2 && s.getInfo(i, 1) == 1) left<T>(s);
+                            else if (x_pos == -1 && s.getInfo(i, 1) == 1) right<T>(s);
+                            else if ((pMap[y_pos + i][x_pos - 1] == 1 && s.getInfo(i, 0)) == 1 || (pMap[y_pos + i][x_pos] == 1 && s.getInfo(i, 1) == 1 && s.getInfo(i, 0) == 0)) break;
+                            else if ((pMap[y_pos + i][x_pos + 3] == 1 && s.getInfo(i, 2) == 1) || (pMap[y_pos + i][x_pos + 2] == 1 && s.getInfo(i, 1) == 1 && s.getInfo(i, 2) == 0)) break;
+                            else if (i == 2)
+                            {
+                                mapInit();
+                                unBlock<T>(s);
+                                s.rotate();
+                                setBlock<T>(s);
+                                showMap();
+                            }
+                        }
+                        break;
+                    case DOWN:
+                        for (int i = 0; i < 3; ++i)
+                        {
+                            if ((y_pos == size - 3 && s.getInfo(2, i) == 1) || (y_pos == size - 2 && s.getInfo(1, i) == 1)) break;
+                            else if (i == 2)
+                            {
+                                mapInit();
+                                down<T>(s);
+                                showMap();
+                            }
+                        }
+                        break;
+                    case LEFT:
+                        for (int i = 0; i < 3; ++i)
+                        {
+                            if ((x_pos == 0 && s.getInfo(i, 0) == 1) || (x_pos == -1 && s.getInfo(i, 1) == 1)) break;
+                            else if ((pMap[y_pos + i][x_pos - 1] == 1 && s.getInfo(i, 0)) == 1 || (pMap[y_pos + i][x_pos] == 1 && s.getInfo(i, 1) == 1 && s.getInfo(i, 0) == 0)) break;
+                            else if (i == 2)
+                            {
+                                mapInit();
+                                left<T>(s);
+                                showMap();
+                            }
+                        }
+                        break;
+                    case RIGHT:
+                        for (int i = 0; i < 3; ++i)
+                        {
+                            if ((x_pos == size - 3 && s.getInfo(i, 2) == 1) || (x_pos == size - 2 && s.getInfo(i, 1) == 1)) break;
+                            else if ((pMap[y_pos + i][x_pos + 3] == 1 && s.getInfo(i, 2) == 1) || (pMap[y_pos + i][x_pos + 2] == 1 && s.getInfo(i, 1) == 1 && s.getInfo(i, 2) == 0)) break;
+                            else if (i == 2)
+                            {
+                                mapInit();
+                                right<T>(s);
+                                showMap();
+                            }
+                        }
+                        break;
+                    }
+                }
             }
-            
         }
         for (int i = 0; i < size; ++i)
         {
@@ -222,29 +218,29 @@ public:
                 stack[i][j] = pMap[i][j];
             }
         }
-        
+
     }
     //만약 한 줄이 다차면 사라지게 하고 위에 있는 것들 내리기
     void oneLine()
     {
-        
+
         for (int i = 0; i < size; ++i)
         {
             int one = 0;
             for (int j = 0; j < size; ++j)
             {
-                if (1 == stack[i][j]) 
+                if (stack[i][j] == 1)
                     ++one;
             }
             if (10 == one)
             {
-                for(int k = 0; k < size; ++k)
+                for (int k = 0; k < size; ++k)
                     stack[i][k] = 0;
-                for (int o = i -1; o >= 0; --o)
+                for (int o = i - 1; o >= 0; --o)
                 {
                     for (int k = 0; k < size; ++k)
                     {
-                        if (1 == stack[o][k])
+                        if (stack[o][k] == 1)
                         {
                             stack[o + 1][k] = stack[o][k];
                             stack[o][k] = 0;
@@ -277,52 +273,41 @@ void tetris()
         switch (i)
         {
         case 0:
-            
             dd.setBlock<A>(a);
             dd.showMap();
             dd.getKey<A>(a);
-            
             dd.posInit();
             dd.mapInit();
             break;
         case 1:
-            
             dd.setBlock<B>(b);
             dd.showMap();
             dd.getKey<B>(b);
-            
             dd.posInit();
             dd.mapInit();
             break;
         case 2:
-            
             dd.setBlock<C>(c);
             dd.showMap();
             dd.getKey<C>(c);
-            
             dd.posInit();
             dd.mapInit();
             break;
         case 3:
-           
             dd.setBlock<D>(d);
             dd.showMap();
             dd.getKey<D>(d);
-            
             dd.posInit();
             dd.mapInit();
             break;
         case 4:
-            
             dd.setBlock<E>(e);
             dd.showMap();
             dd.getKey<E>(e);
-            
             dd.posInit();
             dd.mapInit();
             break;
         case 5:
-            
             dd.setBlock<F>(f);
             dd.showMap();
             dd.getKey<F>(f);
@@ -330,11 +315,9 @@ void tetris()
             dd.mapInit();
             break;
         case 6:
-            
             dd.setBlock<G>(g);
             dd.showMap();
             dd.getKey<G>(g);
-            
             dd.posInit();
             dd.mapInit();
             break;
@@ -347,7 +330,5 @@ int main()
 {
     tetris();
 
-   
-    
     return 0;
 }
