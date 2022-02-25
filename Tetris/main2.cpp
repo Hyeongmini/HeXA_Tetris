@@ -2,6 +2,7 @@
 #include "block.cpp"
 #include <windows.h>
 #include <conio.h>
+#include <time.h>
 
 #define UP 72
 #define DOWN 80
@@ -14,10 +15,10 @@ private:
     int size;
     int x_pos;
     int y_pos;
-    int pMap[10][10];
-    int stack[10][10];
+    int pMap[15][15];
+    int stack[15][15];
 public:
-    map() : size(10), x_pos(0), y_pos(0), pMap{ }, stack{ }
+    map() : size(15), x_pos(0), y_pos(0), pMap{ }, stack{ }
     {
     }
 
@@ -129,6 +130,7 @@ public:
                 pMap[i][j] = stack[i][j];
             }
         }
+        clock_t start = clock();
         int crash = 1;
         while (crash)
         {
@@ -210,6 +212,12 @@ public:
                     }
                 }
             }
+            //일정시간 측정 후 자동으로 내리기
+            if (clock() - start > 700 && key != DOWN)
+            {
+                autoDown<T>(s);
+                start = clock();
+            }
         }
         for (int i = 0; i < size; ++i)
         {
@@ -251,7 +259,24 @@ public:
         }
     }
 
-
+    //내려가기
+    template<class T>
+    void autoDown(T s)
+    {
+        for (int i = 0; i < 3; ++i)
+        {
+            if ((y_pos == size - 3 && s.getInfo(2, i) == 1) || (y_pos == size - 2 && s.getInfo(1, i) == 1)) break;
+            else if ((y_pos == size - 3 && s.getInfo(2, i) == 1) || (y_pos == size - 2 && s.getInfo(1, i) == 1)) break;
+            else if ((pMap[y_pos + 3][x_pos + i] == 1 && s.getInfo(2, i) == 1) || (pMap[y_pos + 2][x_pos + i] == 1 && s.getInfo(1, i) == 1 && s.getInfo(2, i) == 0) || (pMap[y_pos + 1][x_pos + i] == 1 && s.getInfo(0, i) == 1 && s.getInfo(1, i) == 0 && s.getInfo(2, i) == 0))
+                break;
+            else if (i == 2)
+            {
+                mapInit();
+                down<T>(s);
+                showMap();
+            }
+        }
+    }
 };
 
 
@@ -265,7 +290,6 @@ void tetris()
     E e;
     F f;
     G g;
-
     while (true)
     {
         dd.oneLine();
@@ -322,6 +346,8 @@ void tetris()
             dd.mapInit();
             break;
         }
+
+
     }
 }
 
